@@ -25,6 +25,7 @@
 #include "taiga/resource.h"
 #include "taiga/script.h"
 #include "ui/dlg/dlg_anime_list.h"
+#include "ui/dlg/dlg_anime_playlist.h"
 #include "ui/dlg/dlg_main.h"
 #include "ui/dlg/dlg_season.h"
 #include "ui/dialog.h"
@@ -65,6 +66,7 @@ bool MainDialog::MainTree::IsSeparator(int page) {
   switch (page) {
     case kSidebarItemSeparator1:
     case kSidebarItemSeparator2:
+	case kSidebarItemSeparator3:
       return true;
     default:
       return false;

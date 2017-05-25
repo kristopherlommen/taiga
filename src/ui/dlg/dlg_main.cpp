@@ -41,6 +41,7 @@
 #include "ui/dialog.h"
 #include "ui/dlg/dlg_anime_info.h"
 #include "ui/dlg/dlg_anime_list.h"
+#include "ui/dlg/dlg_anime_playlist.h"
 #include "ui/dlg/dlg_history.h"
 #include "ui/dlg/dlg_main.h"
 #include "ui/dlg/dlg_search.h"
@@ -187,6 +188,8 @@ void MainDialog::CreateDialogControls() {
   treeview.hti.push_back(treeview.InsertItem(L"Search", ui::kIcon16_Search, kSidebarItemSearch, nullptr));
   treeview.hti.push_back(treeview.InsertItem(L"Seasons", ui::kIcon16_Calendar, kSidebarItemSeasons, nullptr));
   treeview.hti.push_back(treeview.InsertItem(L"Torrents", ui::kIcon16_Feed, kSidebarItemFeeds, nullptr));
+  treeview.hti.push_back(treeview.InsertItem(nullptr, -1, kSidebarItemSeparator3, nullptr));
+  treeview.hti.push_back(treeview.InsertItem(L"Playlists", ui::kIcon16_Play, kSidebarItemPlaylist, nullptr));
   if (History.queue.GetItemCount() > 0) {
     treeview.RefreshHistoryCounter();
   }
@@ -405,6 +408,11 @@ BOOL MainDialog::PreTranslateMessage(MSG* pMsg) {
               case SearchMode::Feed: {
                 DlgTorrent.Search(Settings[taiga::kTorrent_Discovery_SearchUrl], text);
                 return TRUE;
+			  case kSidebarItemPlaylist:
+				  // Scan available episodes
+				  DlgPlaylist.RefreshList();
+				  return TRUE;
+
               }
             }
           }
@@ -544,6 +552,9 @@ BOOL MainDialog::PreTranslateMessage(MSG* pMsg) {
         case kSidebarItemFeeds:
           return DlgTorrent.SendMessage(
             pMsg->message, pMsg->wParam, pMsg->lParam);
+		case kSidebarItemPlaylist:
+			return DlgPlaylist.SendMessage(
+				pMsg->message, pMsg->wParam, pMsg->lParam);
       }
       break;
     }
@@ -619,9 +630,21 @@ void MainDialog::OnDropFiles(HDROP hDropInfo) {
 #ifdef _DEBUG
   WCHAR buffer[MAX_PATH];
   if (DragQueryFile(hDropInfo, 0, buffer, MAX_PATH) > 0) {
+
     anime::Episode episode;
     track::recognition::ParseOptions parse_options;
     Meow.Parse(buffer, parse_options, episode);
+	if (wcsstr(buffer, L".m3u") != 0)
+	{
+
+		std::wstring wstr = buffer;
+		ui::DlgMain.navigation.SetCurrentPage(ui::kSidebarItemPlaylist);
+		ui::DlgPlaylist.ParsePlaylistFile(wstr);
+		//ui::DlgMain.edit.SetText(body);
+
+	}
+	else
+
     MessageBox(ReplaceVariables(Settings[taiga::kSync_Notify_Format], episode).c_str(), TAIGA_APP_TITLE, MB_OK);
   }
 #endif
@@ -711,6 +734,9 @@ void MainDialog::OnTaskbarCallback(UINT uMsg, LPARAM lParam) {
           case TipType::Search:
             ExecuteAction(L"SearchAnime(" + CurrentEpisode.anime_title() + L")");
             break;
+		  //case taiga::kTipTypePlaylist:
+			//  navigation.SetCurrentPage(kSidebarItemPlaylist);
+			 // break;
           case TipType::Torrent:
             navigation.SetCurrentPage(kSidebarItemFeeds);
             break;
@@ -800,6 +826,7 @@ void MainDialog::UpdateControlPositions(const SIZE* size) {
   DlgSeason.SetPosition(nullptr, rect_content_);
   DlgStats.SetPosition(nullptr, rect_content_);
   DlgTorrent.SetPosition(nullptr, rect_content_);
+  DlgPlaylist.SetPosition(nullptr, rect_content_);
 }
 
 void MainDialog::UpdateStatusTimer() {
@@ -910,6 +937,7 @@ void MainDialog::Navigation::SetCurrentPage(int page, bool add_to_history) {
     DISPLAY_PAGE(kSidebarItemSearch, DlgSearch, IDD_SEARCH);
     DISPLAY_PAGE(kSidebarItemSeasons, DlgSeason, IDD_SEASON);
     DISPLAY_PAGE(kSidebarItemFeeds, DlgTorrent, IDD_TORRENT);
+	DISPLAY_PAGE(kSidebarItemPlaylist, DlgPlaylist, IDD_ANIME_PLAYLIST);
   }
   #undef DISPLAY_PAGE
 
@@ -920,6 +948,7 @@ void MainDialog::Navigation::SetCurrentPage(int page, bool add_to_history) {
   if (current_page_ != kSidebarItemSearch) DlgSearch.Hide();
   if (current_page_ != kSidebarItemSeasons) DlgSeason.Hide();
   if (current_page_ != kSidebarItemFeeds) DlgTorrent.Hide();
+  if (current_page_ != kSidebarItemPlaylist) DlgPlaylist.Hide();
 
   parent->treeview.SelectItem(parent->treeview.hti.at(current_page_));
 
@@ -961,6 +990,7 @@ void MainDialog::Navigation::RefreshSearchText(int previous_page) {
       cue_text = L"Filter list or search " + taiga::GetCurrentService()->name();
       break;
     case kSidebarItemNowPlaying:
+	case kSidebarItemPlaylist:
     case kSidebarItemHistory:
     case kSidebarItemStats:
     case kSidebarItemSearch:
@@ -979,6 +1009,7 @@ void MainDialog::Navigation::RefreshSearchText(int previous_page) {
     case kSidebarItemSeasons:
     case kSidebarItemSearch:
     case kSidebarItemFeeds:
+	case kSidebarItemPlaylist:
       parent->search_bar.filters.text[current_page_] = parent->search_bar.text[current_page_];
       break;
     default:

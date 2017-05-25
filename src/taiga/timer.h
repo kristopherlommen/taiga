@@ -29,7 +29,8 @@ enum TimerIds {
   kTimerMedia,
   kTimerMemory,
   kTimerStats,
-  kTimerTorrents
+  kTimerTorrents,
+  kTimerAnimePlayList
 };
 
 class Timer : public base::Timer {

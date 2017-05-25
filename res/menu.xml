@@ -69,6 +69,7 @@
 		<item name="Search"      action="ViewContent(6)" radio="1"/>
 		<item name="Seasons"     action="ViewContent(7)" radio="1"/>
 		<item name="Torrents"    action="ViewContent(8)" radio="1"/>
+				<item name="Anime Playlist"	action="ViewContent(10)" radio="1"/>
 		<item type="separator"/>
 		<item name="Show sidebar" action="ToggleSidebar()" checked="1"/>
 	</menu>
@@ -91,6 +92,15 @@
 		<item type="separator"/>
 		<item name="Add to list" sub="AddToList" disabled="1"/>
 	</menu>
+	<menu name="PlayListList">
+		<item name="Play Playlist" action="PlayList()" default="1"/>
+		<item name="Information" action="Info()" default="1"/>
+		<item name="Open folder" action="OpenFolder()"/>
+		<item name="Export List As M3U Playlist File" action="ExportPlaylist()"/>
+		<item name="Schedule List for Later Date" action="ScheduleList()"/>
+		<item type="separator"/>
+		<item name="Remove From Playlist" action="EditDelete()"/>
+	</menu>
 	<menu name="AddToList">
 		<item name="Currently watching" action="AddToList(1)"/>
 		<item name="Completed"          action="AddToList(2)"/>
@@ -102,6 +112,7 @@
 	<!-- Right click -->
 	<menu name="RightClick">
 		<item name="Information" action="Info()"/>
+				<item name="Add To Play List"          action="addsingleplaylist()"/>
 		<item name="Search" sub="Search"/>
 		<item type="separator"/>
 		<item name="Edit" action="EditAll()"/>
@@ -118,6 +129,7 @@
 	</menu>
 	<!-- Edit -->
 	<menu name="Edit">
+			<item name="Add To Play List"          action="AddToPlayList()"/>
 		<item name="Set &date"          sub="EditDate"/>
 		<item name="Set &episode..." action="EditEpisode()"/>
 		<item name="Set sco&re"         sub="EditScore"/>

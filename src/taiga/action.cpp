@@ -36,6 +36,7 @@
 #include "track/search.h"
 #include "ui/dlg/dlg_main.h"
 #include "ui/dlg/dlg_search.h"
+#include "ui/dlg/dlg_anime_playlist.h"
 #include "ui/dlg/dlg_season.h"
 #include "ui/dlg/dlg_settings.h"
 #include "ui/dlg/dlg_torrent.h"
@@ -515,13 +516,54 @@ void ExecuteAction(std::wstring action, WPARAM wParam, LPARAM lParam) {
   // PlayNext([anime_id])
   //   Searches for the next episode of an anime and plays it.
   //   lParam is an anime ID.
-  } else if (action == L"PlayNext") {
-    int anime_id = body.empty() ? static_cast<int>(lParam) : ToInt(body);
-    if (anime::IsValidId(anime_id)) {
-      anime::PlayNextEpisode(anime_id);
-    } else {
-      anime::PlayNextEpisodeOfLastWatchedAnime();
-    }
+  }
+  else if (action == L"PlayNext") {
+	  int anime_id = body.empty() ? static_cast<int>(lParam) : ToInt(body);
+	  if (anime::IsValidId(anime_id)) {
+		  anime::PlayNextEpisode(anime_id);
+	  }
+	  else {
+		  anime::PlayNextEpisodeOfLastWatchedAnime();
+	  }
+
+  }
+  else if (action == L"addsingleplaylist") {
+	  int number = ToInt(body);
+	  int anime_id = static_cast<int>(lParam);
+	  ui::DlgMain.navigation.SetCurrentPage(ui::kSidebarItemPlaylist);
+	  ui::DlgMain.edit.SetText(body);
+	  ui::DlgPlaylist.PushBack(anime_id);
+	  //ui::DlgPlaylist.AddAnimeToList(anime_id);
+	  //ui::DlgPlaylist.anime_ids_.push_back(anime_id);
+
+	  //ui::DlgPlaylist.AddAnimeToList(anime_id);
+
+
+
+  }
+   else if (action == L"AddToPlayList") {
+
+	  ui::DlgMain.navigation.SetCurrentPage(ui::kSidebarItemPlaylist);
+	  ui::DlgMain.edit.SetText(body);
+	  ui::DlgPlaylist.ParseResults(*reinterpret_cast<std::vector<int>*>(lParam));
+	  
+}
+  else if (action == L"PlayList") {
+	  
+	  const auto& anime_ids = *reinterpret_cast<std::vector<int>*>(lParam);	  
+	  
+	  //int value = ui::OnLibraryEntriesPlayList(anime_ids);
+
+
+	  //if (value > -1) {
+		  for (const auto& anime_id : anime_ids) {
+			  auto anime_item = AnimeDatabase.FindItem(anime_id);
+			  int number = anime_item->GetMyLastWatchedEpisode() + 1;
+			  //TRACE("ANIME NUMBER: %d\n",anime_id);
+			  
+			  anime::PlayEpisode(anime_id, number);
+			  std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+		  }
 
   // PlayRandom()
   //   Searches for a random episode of an anime and plays it.

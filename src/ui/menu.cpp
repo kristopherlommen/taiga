@@ -30,6 +30,7 @@
 #include "ui/menu.h"
 
 #include "dlg/dlg_anime_list.h"
+#include "ui/dlg/dlg_anime_playlist.h"
 #include "dlg/dlg_main.h"
 #include "dlg/dlg_season.h"
 

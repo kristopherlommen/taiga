@@ -42,6 +42,7 @@
 #define IDD_TORRENT                             146
 #define IDD_UPDATE                              147
 #define IDD_UPDATE_NEW                          148
+#define IDD_ANIME_PLAYLIST                      149
 #define IDC_BUTTON_ADDFOLDER                    1000
 #define IDC_BUTTON_BROWSE                       1001
 #define IDC_BUTTON_CACHE_CLEAR                  1002
@@ -208,3 +209,4 @@
 #define IDC_TOOLBAR_TORRENT                     1163
 #define IDC_TREE_MAIN                           1164
 #define IDC_TREE_SECTIONS                       1165
+#define IDC_LIST_PLAYLIST						1166

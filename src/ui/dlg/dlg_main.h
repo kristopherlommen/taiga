@@ -54,7 +54,9 @@ enum SidebarItems {
   kSidebarItemSeparator2,
   kSidebarItemSearch,
   kSidebarItemSeasons,
-  kSidebarItemFeeds
+  kSidebarItemFeeds,
+  kSidebarItemSeparator3,
+  kSidebarItemPlaylist
 };
 
 class MainDialog : public win::Dialog {

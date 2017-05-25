@@ -32,6 +32,7 @@
 #include "track/media.h"
 #include "track/search.h"
 #include "ui/dlg/dlg_anime_list.h"
+#include "ui/dlg/dlg_anime_playlist.h"
 #include "ui/dlg/dlg_main.h"
 #include "ui/dlg/dlg_stats.h"
 #include "ui/dlg/dlg_torrent.h"
@@ -45,6 +46,8 @@ Timer timer_media(kTimerMedia, 2 * 60, false);  //  2 minutes
 Timer timer_memory(kTimerMemory, 10 * 60);      // 10 minutes
 Timer timer_stats(kTimerStats, 10);             // 10 seconds
 Timer timer_torrents(kTimerTorrents, 60 * 60);  // 60 minutes
+
+Timer timer_anime_playlist(kTimerAnimePlayList, 30);    //  1 minute
 
 TimerManager timers;
 
@@ -95,6 +98,12 @@ void Timer::OnTimeout() {
       Aggregator.CheckFeed(FeedCategory::Link,
                            Settings[taiga::kTorrent_Discovery_Source], true);
       break;
+
+	case kTimerAnimePlayList:
+		ui::DlgPlaylist.RefreshList();
+
+		break;
+
   }
 }
 
@@ -115,6 +124,7 @@ void TimerManager::Initialize() {
   InsertTimer(&timer_memory);
   InsertTimer(&timer_stats);
   InsertTimer(&timer_torrents);
+  InsertTimer(&timer_anime_playlist);
 }
 
 void TimerManager::UpdateEnabledState() {

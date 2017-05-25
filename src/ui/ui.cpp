@@ -43,6 +43,7 @@
 #include "track/recognition.h"
 #include "ui/dlg/dlg_anime_info.h"
 #include "ui/dlg/dlg_anime_list.h"
+#include "ui/dlg/dlg_anime_playlist.h"
 #include "ui/dlg/dlg_history.h"
 #include "ui/dlg/dlg_input.h"
 #include "ui/dlg/dlg_main.h"
@@ -467,6 +468,7 @@ static bool AnimeListNeedsResort() {
 void OnHistoryAddItem(const HistoryItem& history_item) {
   DlgHistory.RefreshList();
   DlgSearch.RefreshList();
+  DlgPlaylist.RefreshList();
   DlgMain.treeview.RefreshHistoryCounter();
   DlgNowPlaying.Refresh(false, false, false);
 
@@ -491,6 +493,7 @@ void OnHistoryAddItem(const HistoryItem& history_item) {
 void OnHistoryChange(const HistoryItem* history_item) {
   DlgHistory.RefreshList();
   DlgSearch.RefreshList();
+  DlgPlaylist.RefreshList();
   DlgMain.treeview.RefreshHistoryCounter();
   DlgNowPlaying.Refresh(false, false, false);
 
@@ -584,7 +587,7 @@ void OnAnimeDelete(int id, const string_t& title) {
 
   DlgHistory.RefreshList();
   DlgMain.treeview.RefreshHistoryCounter();
-
+  DlgPlaylist.RefreshList();
   DlgSearch.RefreshList();
   DlgSeason.RefreshList();
 }
@@ -859,6 +862,7 @@ void OnSettingsUserChange() {
   DlgHistory.RefreshList();
   DlgNowPlaying.Refresh();
   DlgSearch.RefreshList();
+  DlgPlaylist.RefreshList();
   DlgSeason.RefreshList();
   DlgSeason.RefreshToolbar();
   DlgStats.Refresh();

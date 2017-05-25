@@ -43,7 +43,8 @@ enum class Path {
   ThemeCurrent,
   User,
   UserHistory,
-  UserLibrary
+  UserLibrary,
+  kPathUserSavedPlaylist
 };
 
 std::wstring GetUserDirectoryName(const sync::ServiceId service_id);

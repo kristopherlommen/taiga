@@ -241,6 +241,7 @@
     <ClCompile Include="..\..\src\ui\dlg\dlg_anime_info.cpp" />
     <ClCompile Include="..\..\src\ui\dlg\dlg_anime_info_page.cpp" />
     <ClCompile Include="..\..\src\ui\dlg\dlg_anime_list.cpp" />
+    <ClCompile Include="..\..\src\ui\dlg\dlg_anime_playlist.cpp" />
     <ClCompile Include="..\..\src\ui\dlg\dlg_feed_condition.cpp" />
     <ClCompile Include="..\..\src\ui\dlg\dlg_feed_filter.cpp" />
     <ClCompile Include="..\..\src\ui\dlg\dlg_format.cpp" />
@@ -390,6 +391,7 @@
     <ClInclude Include="..\..\src\ui\dlg\dlg_anime_info.h" />
     <ClInclude Include="..\..\src\ui\dlg\dlg_anime_info_page.h" />
     <ClInclude Include="..\..\src\ui\dlg\dlg_anime_list.h" />
+    <ClInclude Include="..\..\src\ui\dlg\dlg_anime_playlist.h" />
     <ClInclude Include="..\..\src\ui\dlg\dlg_feed_condition.h" />
     <ClInclude Include="..\..\src\ui\dlg\dlg_feed_filter.h" />
     <ClInclude Include="..\..\src\ui\dlg\dlg_format.h" />

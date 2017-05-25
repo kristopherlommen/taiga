@@ -34,6 +34,7 @@
 #include "taiga/taiga.h"
 #include "taiga/timer.h"
 #include "ui/dlg/dlg_anime_list.h"
+#include "ui/dlg/dlg_anime_playlist.h"
 #include "ui/dlg/dlg_main.h"
 #include "ui/dlg/dlg_torrent.h"
 #include "ui/dialog.h"
@@ -140,6 +141,7 @@ INT_PTR AnimeListDialog::DialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
             switch (index) {
               case kSidebarItemSearch:
               case kSidebarItemFeeds:
+			  case kSidebarItemPlaylist:
                 allow_drop = true;
                 break;
             }
@@ -210,6 +212,9 @@ INT_PTR AnimeListDialog::DialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
             case kSidebarItemFeeds:
               DlgTorrent.Search(Settings[taiga::kTorrent_Discovery_SearchUrl], anime_id);
               break;
+			case kSidebarItemPlaylist:
+				DlgPlaylist.ParseResults(anime_ids);
+				break;
           }
         }
       }

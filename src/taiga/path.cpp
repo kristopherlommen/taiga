@@ -92,6 +92,8 @@ std::wstring GetPath(Path path) {
       return data_path + L"user\\" + GetUserDirectoryName() + L"\\history.xml";
     case Path::UserLibrary:
       return data_path + L"user\\" + GetUserDirectoryName() + L"\\anime.xml";
+	case Path::kPathUserSavedPlaylist:
+		return data_path + L"user\\" + GetUserDirectoryName() + L"\\playlist.m3u";
   }
 }
 
